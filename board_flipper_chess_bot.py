@@ -1,20 +1,18 @@
 #!/usr/bin/env python
 import chess
 import chess.svg
-import random
 import sys
-import networkx as nx
 import pickle
 
-MAX_DEPTH = 7
-NO_TOP_MOVES = 8
+MAX_DEPTH = 6
+NO_TOP_MOVES = 6
 board = chess.Board()
-G = nx.DiGraph()
-G.add_node("", utility=None)
 
 def load_model(model_path):
     with open(model_path, 'rb') as f:
-        model = pickle.load(f)
+        return pickle.load(f)
+
+model = load_model('chess-carnage-svr.pkl')
 
 def evaluate_board(b: chess.Board):
     """
@@ -27,23 +25,38 @@ def evaluate_board(b: chess.Board):
     - int: An integer representing the evaluation score of the board.
            Positive values favor White, and negative values favor Black.
     """
-    if b.is_checkmate():
-        if b.turn:
-            return -100000  # Black wins
+    """
+    Evaluates a position using the learned model.
+    """
+    features = fen_to_features(b.fen())
+    evaluation = model.predict([features])
+    return evaluation[0]
+
+def fen_to_features(fen):
+    """
+    Converts a FEN string to a feature vector suitable for machine learning.
+    In this example, we use a simple feature representation where each piece on
+    the board is encoded as a binary feature.
+    """
+    board = chess.Board(fen)
+    feature_vector = []
+
+    piece_map = board.piece_map()
+    for square in chess.SQUARES:
+        piece = piece_map.get(square)
+        if piece:
+            piece_type = piece.piece_type
+            piece_color = piece.color
+            # Encode piece type (1-6) and color (1 for white, 2 for black)
+            feature_vector.append((piece_type, 1 if piece_color else 2))
         else:
-            return 100000   # White wins
-    elif b.is_stalemate() or b.is_insufficient_material():
-        return 0  # Draw
-
-    value = 0
-    for piece_type, piece_value in piece_values.items():
-        value += len(b.pieces(piece_type, chess.WHITE)) * piece_value
-        value -= len(b.pieces(piece_type, chess.BLACK)) * piece_value
-        piece_table = piece_tables.get(piece_type)
-        value += sum([piece_table[i] for i in b.pieces(piece_type, chess.WHITE)])
-        value -= sum([piece_table[chess.square_mirror(i)] for i in b.pieces(piece_type, chess.BLACK)])
-
-    return value
+            feature_vector.append((0, 0))
+    # Flatten the feature vector
+    feature_vector_flat = [val for sublist in feature_vector for val in sublist]
+    # Include whose turn it is (0 for white's turn, 1 for black's turn)
+    turn_feature = 0 if board.turn == chess.WHITE else 1
+    feature_vector_flat.append(turn_feature)
+    return feature_vector_flat
 
 def get_top_moves(b: chess.Board, is_maximizing, no_top_moves):
     """
@@ -67,44 +80,34 @@ def get_top_moves(b: chess.Board, is_maximizing, no_top_moves):
     top_moves = move_scores[:no_top_moves]
     return [move for score, move in top_moves]
 
-def minimax_alphabeta_graph(G: nx.DiGraph, board: chess.Board, depth, alpha, beta, is_maximizing, no_top_moves,
-                            parent_node=None, move=None, prune=True):
+def minimax_alphabeta(board: chess.Board, depth, alpha, beta, is_maximizing, no_top_moves,
+                            move=None, prune=True):
     """
-    Perform a minimax search with alpha-beta pruning, constructing a graph of board positions and returns the best
-    move based on the evaluation scores.
+    Perform a minimax search with alpha-beta pruning and returns the best move based on the evaluation scores.
 
     Parameters:
-    - G (nx.DiGraph): The directed graph used to represent the game tree.
     - board (chess.Board): The current chess board position.
     - depth (int): The remaining depth of the search.
     - alpha (float): The alpha value for alpha-beta pruning.
     - beta (float): The beta value for alpha-beta pruning.
     - is_maximizing (bool): True if maximizing player's turn (White), False if minimizing player's turn (Black).
     - no_top_moves (int): Number of top moves to consider at each level.
-    - parent_node (str): The label of the parent node in the graph.
     - move (chess.Move): The move leading to this board position.
     - prune (bool): If True, use alpha-beta pruning; otherwise, perform a regular minimax search.
 
     Returns:
     - int: The selected evaluation score for the board position.
     """
-    node_label = str(board)
-    G.add_node(node_label, utility=None)
-    if parent_node is not None and move is not None:
-        G.add_edge(parent_node, node_label, label=move)
 
     if depth == 0 or board.is_game_over():
-        utility = evaluate_board(board)
-        G.nodes[node_label]['utility'] = utility
-        return utility
+        return evaluate_board(board)
 
     top_moves = get_top_moves(board, is_maximizing, no_top_moves)
 
     best_eval = -float("inf") if is_maximizing else float("inf")
     for move in top_moves:
         board.push(move)
-        evaluation = minimax_alphabeta_graph(G, board, depth - 1, alpha, beta, not is_maximizing, no_top_moves,
-                                             node_label, move)
+        evaluation = minimax_alphabeta(board, depth - 1, alpha, beta, not is_maximizing, no_top_moves, move)
         board.pop()
         if is_maximizing:
             best_eval = max(best_eval, evaluation)
@@ -114,7 +117,6 @@ def minimax_alphabeta_graph(G: nx.DiGraph, board: chess.Board, depth, alpha, bet
             beta = min(beta, best_eval) if prune else beta
         if alpha >= beta:
             break
-    G.nodes[node_label]['utility'] = best_eval
     return best_eval
 
 def make_them_flip_the_board(b: chess.Board, depth, no_top_moves, prune=True):
@@ -131,9 +133,6 @@ def make_them_flip_the_board(b: chess.Board, depth, no_top_moves, prune=True):
     - move (chess.Move): The best move determined by the minimax algorithm.
     - G (nx.DiGraph): The directed graph representing the minimax game tree.
     """
-    G = nx.DiGraph()
-    node_label = str(b)
-    G.add_node(node_label, utility=None)
 
     is_maximizing = b.turn
     best_move = None
@@ -145,16 +144,13 @@ def make_them_flip_the_board(b: chess.Board, depth, no_top_moves, prune=True):
 
     for move in top_moves:
         b.push(move)
-        board_value = minimax_alphabeta_graph(G, b, depth - 1, alpha, beta, not is_maximizing, no_top_moves, node_label,
-                                              move, prune=prune)
+        board_value = minimax_alphabeta(b, depth - 1, alpha, beta, not is_maximizing, no_top_moves ,move, prune=prune)
         b.pop()
 
         if (is_maximizing and board_value > best_value) or (not is_maximizing and board_value < best_value):
             best_value = board_value
             best_move = move
-    G.nodes[node_label]['utility'] = best_value
-    return best_move, G
-
+    return best_move
 
 def uci(msg: str):
     """Returns result of UCI protocol given passed message"""
@@ -178,7 +174,7 @@ def uci(msg: str):
         fen = msg.removeprefix("position fen ")
         board.set_fen(fen)
     elif msg.startswith("go"):
-        move, G = make_them_flip_the_board(board, MAX_DEPTH, NO_TOP_MOVES)
+        move = make_them_flip_the_board(board, MAX_DEPTH, NO_TOP_MOVES)
         print(f"bestmove {move}")
     elif msg == "quit":
         sys.exit(0)
@@ -194,19 +190,12 @@ def main():
     Returns:
     - None
     """
-    if len(sys.argv) == 2 and sys.argv[1] == "draw":
-        # Four Nights Sicilian Defence FEN string
-        fen = "r1bqkb1r/pp1p1ppp/2n1pn2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 3 6"
-        board.set_fen(fen)
-        save_board_image(board)
-        create_and_visualize_top3_graph(board, 4, 3)
-    else:
-        try:
-            while True:
-                uci(input())
-        except Exception as e:
-            print(F"Fatal Error: {e}")
-            raise
+    try:
+        while True:
+            uci(input())
+    except Exception as e:
+        print(F"Fatal Error: {e}")
+        raise
 
 if __name__ == "__main__":
     main()
