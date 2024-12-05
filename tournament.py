@@ -1,8 +1,10 @@
+import time
+
 from chester.timecontrol import TimeControl
 from chester.tournament import play_tournament
 
 # Each string is the name/path to an executable UCI engine.
-players = ["random_chess_bot.exe", "stockfish-windows-x86-64-modern.exe"]
+players = ["dist/random_chess_bot", "./board_flipper_chess_bot.py"]
 
 # Specify time and increment, both in seconds.
 time_control = TimeControl(initial_time=180, increment=10)
@@ -12,6 +14,8 @@ n_games = 5
 
 # Tabulate scores at the end.
 scores = {}
+start_time = time.time()
+match_start_time = start_time
 
 for pgn in play_tournament(
     players,
@@ -33,5 +37,12 @@ for pgn in play_tournament(
     scores[white] += float(eval(results[0]))
     scores[black] += float(eval(results[1]))
 
+    match_time = time.time() - match_start_time
+    print(f"Match time: {round(match_time // 60)} m {round(match_time % 60)} s\n")
+    match_start_time = time.time()
+
 for (bot,score) in scores.items():
     print(bot , ":", score)
+
+tournament_time = time.time() - start_time
+print(f"Tournament time: {round(tournament_time // 60)} m {round(tournament_time % 60)} s\n")

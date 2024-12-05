@@ -1,8 +1,16 @@
 import csv
 import chess
+import pickle
+
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.svm import LinearSVR
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
+
+dataset_path = 'chess_evaluations.csv'
+model_filename = 'chess-carnage-svr.pkl'
 
 def fen_to_features(fen):
     """
@@ -51,6 +59,10 @@ def train_model(x_train, y_train):
     Trains a linear regression model using the provided training data.
     """
     model = LinearRegression()
+    # model = DecisionTreeRegressor(max_depth=10)
+    # model = RandomForestRegressor(n_estimators=100, max_depth=10)
+    # model = LinearSVR(C=1.0, epsilon=0.1, max_iter=10000)
+
     model.fit(x_train, y_train)
     return model
 
@@ -72,7 +84,7 @@ def evaluate_position_with_model(fen, model):
 
 def main():
     # Load dataset
-    x, y = load_dataset('chess_evaluations.csv')
+    x, y = load_dataset(dataset_path)
 
     # Split dataset into training and testing sets
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
@@ -86,6 +98,8 @@ def main():
     # Test the model with a FEN string
     fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     evaluation = evaluate_position_with_model(fen, model)
+    with open(model_filename, 'wb') as f:
+        pickle.dump(model, f)
     print(f"Evaluation for FEN '{fen}': {evaluation}")
 
 if __name__ == "__main__":
