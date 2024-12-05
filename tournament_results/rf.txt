@@ -1,0 +1,123 @@
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "1"]
+[White "Random Chess Bot"]
+[Black "Board Flipper Chess Bot"]
+[Result "1-0"]
+
+1. e3 Nc6 2. g3 1-0
+
+Match time: 1 m 42 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "1"]
+[White "Board Flipper Chess Bot"]
+[Black "Random Chess Bot"]
+[Result "0-1"]
+
+0-1
+
+Match time: 1 m 17 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "2"]
+[White "Random Chess Bot"]
+[Black "Board Flipper Chess Bot"]
+[Result "1-0"]
+
+1. e4 Nc6 2. h4 1-0
+
+Match time: 2 m 20 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "2"]
+[White "Board Flipper Chess Bot"]
+[Black "Random Chess Bot"]
+[Result "0-1"]
+
+0-1
+
+Match time: 1 m 16 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "3"]
+[White "Random Chess Bot"]
+[Black "Board Flipper Chess Bot"]
+[Result "1-0"]
+
+1. Nf3 Nc6 2. Ne5 1-0
+
+Match time: 2 m 6 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "3"]
+[White "Board Flipper Chess Bot"]
+[Black "Random Chess Bot"]
+[Result "0-1"]
+
+0-1
+
+Match time: 1 m 17 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "4"]
+[White "Random Chess Bot"]
+[Black "Board Flipper Chess Bot"]
+[Result "1-0"]
+
+1. b3 Nc6 2. c3 1-0
+
+Match time: 1 m 40 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "4"]
+[White "Board Flipper Chess Bot"]
+[Black "Random Chess Bot"]
+[Result "0-1"]
+
+0-1
+
+Match time: 1 m 18 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "5"]
+[White "Random Chess Bot"]
+[Black "Board Flipper Chess Bot"]
+[Result "1-0"]
+
+1. c4 Nc6 2. d4 1-0
+
+Match time: 2 m 8 s
+
+[Event "CS5100 Tournament"]
+[Site "My Computer"]
+[Date "2024-12-01"]
+[Round "5"]
+[White "Board Flipper Chess Bot"]
+[Black "Random Chess Bot"]
+[Result "0-1"]
+
+0-1
+
+Match time: 1 m 19 s
+
+Random Chess Bot : 10.0
+Board Flipper Chess Bot : 0.0
+Tournament time: 16 m 22 s
