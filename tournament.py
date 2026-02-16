@@ -1,3 +1,5 @@
+"""Run a round-robin tournament between UCI engines."""
+
 import time
 
 from chester.timecontrol import TimeControl
@@ -24,8 +26,8 @@ for pgn in play_tournament(
     repeat=True,  # Each opening played twice,
 ):
     # Printing out the game result.
-    pgn.headers["Event"] = "CS5100 Tournament"
-    pgn.headers["Site"] = "My Computer"
+    pgn.headers["Event"] = "Model Tournament"
+    pgn.headers["Site"] = "Local Machine"
     print(pgn, "\n")
 
     # Update scores.

@@ -34,7 +34,10 @@ def evaluate_position(board, engine):
 
 
 def main():
-    engine_path = "/opt/homebrew/Cellar/stockfish/17/bin/stockfish"  # Update this path
+    """Generate evaluated FEN positions and write them to CSV."""
+    engine_path = os.environ.get("STOCKFISH_PATH")
+    if not engine_path:
+        raise ValueError("STOCKFISH_PATH is not set. Provide the engine path via env var.")
     engine = chess.engine.SimpleEngine.popen_uci(engine_path)
 
     try:

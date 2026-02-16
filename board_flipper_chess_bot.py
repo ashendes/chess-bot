@@ -9,6 +9,7 @@ NO_TOP_MOVES = 6
 board = chess.Board()
 
 def load_model(model_path):
+    """Load a serialized model from disk."""
     with open(model_path, 'rb') as f:
         return pickle.load(f)
 
@@ -25,9 +26,7 @@ def evaluate_board(b: chess.Board):
     - int: An integer representing the evaluation score of the board.
            Positive values favor White, and negative values favor Black.
     """
-    """
-    Evaluates a position using the learned model.
-    """
+
     features = fen_to_features(b.fen())
     evaluation = model.predict([features])
     return evaluation[0]

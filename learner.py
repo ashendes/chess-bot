@@ -83,6 +83,9 @@ def evaluate_position_with_model(fen, model):
     return evaluation[0]
 
 def main():
+    """
+    Train the evaluation model, report metrics, and persist the trained model.
+    """
     # Load dataset
     x, y = load_dataset(dataset_path)
 
