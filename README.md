@@ -1,6 +1,6 @@
 # Chess Carnage: Learning-Based Chess Evaluation ♔♕♗♘♙♖
 
-Train regression models to evaluate chess positions, integrate the learned evaluator into a UCI chess bot, and compare model performance through automated tournaments and analysis.
+This project explores learning-based chess evaluation by training regression models to score positions and using the learned evaluator inside a UCI-compatible bot. The purpose is to build a practical pipeline from engine-labeled FEN data to an evaluation function, then measure how different models affect bot strength and decision quality through automated tournaments and analysis. The workflow generates labeled FEN positions from Stockfish, trains a regression model, then plugs the evaluator into a minimax search for UCI play and benchmarking.
 
 ## Tech Stack
 
@@ -40,4 +40,4 @@ The notebook `chess-carnage-analysis.ipynb` compares regression models, tourname
 ## Project Artifacts
 
 - `tournament_results/` contains tournament summaries.
-- Model files (`.pkl`) are saved in the repository root.
+- `models-trained/` contains trained model files (`.pkl`).
