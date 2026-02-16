@@ -1,4 +1,4 @@
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "1"]
@@ -10,7 +10,7 @@
 
 Match time: 12 m 22 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "1"]
@@ -22,7 +22,7 @@ Match time: 12 m 22 s
 
 Match time: 9 m 54 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "2"]
@@ -34,7 +34,7 @@ Match time: 9 m 54 s
 
 Match time: 10 m 15 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "2"]
@@ -46,7 +46,7 @@ Match time: 10 m 15 s
 
 Match time: 10 m 1 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "3"]
@@ -58,7 +58,7 @@ Match time: 10 m 1 s
 
 Match time: 12 m 57 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "3"]
@@ -70,7 +70,7 @@ Match time: 12 m 57 s
 
 Match time: 7 m 52 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "4"]
@@ -82,7 +82,7 @@ Match time: 7 m 52 s
 
 Match time: 12 m 54 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "4"]
@@ -94,7 +94,7 @@ Match time: 12 m 54 s
 
 Match time: 6 m 41 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "5"]
@@ -106,7 +106,7 @@ Match time: 6 m 41 s
 
 Match time: 7 m 55 s
 
-[Event "CS5100 Tournament"]
+[Event "Model Tournament"]
 [Site "My Computer"]
 [Date "2024-11-30"]
 [Round "5"]
